@@ -1,26 +1,266 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy: #0b1d35;
+  --navy-deep: #07132a;
+  --navy-mid: #122344;
+  --ivory: #f7f3ec;
+  --ivory-warm: #f2ead8;
+  --teal: #2a7a8c;
+  --teal-light: #3a95a8;
+  --teal-pale: #d4edf1;
+  --champagne: #c9a96e;
+  --champagne-light: #e0c896;
+  --champagne-pale: #f5ead2;
+  --charcoal: #2c2c2c;
+  --muted: #7a7a7a;
+  --white: #ffffff;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-navy-mid: var(--navy-mid);
+  --color-ivory: var(--ivory);
+  --color-ivory-warm: var(--ivory-warm);
+  --color-teal: var(--teal);
+  --color-teal-light: var(--teal-light);
+  --color-teal-pale: var(--teal-pale);
+  --color-champagne: var(--champagne);
+  --color-champagne-light: var(--champagne-light);
+  --color-champagne-pale: var(--champagne-pale);
+  --color-charcoal: var(--charcoal);
+  --color-muted: var(--muted);
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ivory);
+  color: var(--charcoal);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Typography ── */
+.font-serif { font-family: var(--font-playfair), Georgia, serif; }
+.font-sans  { font-family: var(--font-inter), system-ui, sans-serif; }
+
+/* ── Luxury link reset ── */
+a { color: inherit; text-decoration: none; }
+
+/* ── Focus visible ── */
+:focus-visible {
+  outline: 2px solid var(--champagne);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── Scroll animation helpers ── */
+@media (prefers-reduced-motion: no-preference) {
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Luxury divider ── */
+.divider-champagne {
+  width: 56px;
+  height: 2px;
+  background: var(--champagne);
+  display: block;
+}
+
+/* ── Overlay gradient ── */
+.hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(7, 19, 42, 0.35) 0%,
+    rgba(7, 19, 42, 0.55) 60%,
+    rgba(7, 19, 42, 0.75) 100%
+  );
+}
+
+.hero-overlay-side {
+  background: linear-gradient(
+    to right,
+    rgba(7, 19, 42, 0.80) 0%,
+    rgba(7, 19, 42, 0.40) 55%,
+    transparent 100%
+  );
+}
+
+/* ── Section padding ── */
+.section-pad {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+@media (min-width: 768px) {
+  .section-pad {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ivory); }
+::-webkit-scrollbar-thumb { background: var(--champagne); border-radius: 3px; }
+
+/* ── Accordion animation ── */
+.accordion-content {
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Image ken-burns ── */
+@media (prefers-reduced-motion: no-preference) {
+  .ken-burns {
+    animation: kenBurns 18s ease-in-out infinite alternate;
+  }
+  @keyframes kenBurns {
+    0%   { transform: scale(1.00) translate(0, 0); }
+    100% { transform: scale(1.06) translate(-1%, -1%); }
+  }
+}
+
+/* ── Tour card hover ── */
+.tour-card-img {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.tour-card:hover .tour-card-img {
+  transform: scale(1.04);
+}
+
+/* ── Luxury button ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background: var(--champagne);
+  color: var(--navy-deep);
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+.btn-primary:hover {
+  background: var(--champagne-light);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1.5px solid rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+.btn-outline:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--white);
+  transform: translateY(-1px);
+}
+
+.btn-outline-navy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background: transparent;
+  color: var(--navy);
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1.5px solid var(--navy);
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+.btn-outline-navy:hover {
+  background: var(--navy);
+  color: var(--ivory);
+  transform: translateY(-1px);
+}
+
+/* ── Nav link underline ── */
+.nav-link {
+  position: relative;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: inherit;
+  padding-bottom: 2px;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--champagne);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* ── Form inputs ── */
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: var(--white);
+  border: 1px solid #d8d0c4;
+  color: var(--charcoal);
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.9375rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+.form-input:focus {
+  border-color: var(--teal);
+}
+.form-input.error {
+  border-color: #c0392b;
+}
+
+/* ── Prose ── */
+.prose-luxury p {
+  color: #555;
+  line-height: 1.85;
+  font-size: 1.0625rem;
+}
+.prose-luxury p + p {
+  margin-top: 1.25rem;
 }
