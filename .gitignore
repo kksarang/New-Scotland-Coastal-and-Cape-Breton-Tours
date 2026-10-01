@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.ssr/
+.sites-runtime/
+.env
+.env.*
+!.env.example
+.DS_Store
+.sites-checkout/
+*.tar.gz
+hostinger-website.zip

@@ -1,0 +1,4 @@
+import {useEffect,useState} from 'react';
+const KEY='new-scotland-saved-tours';
+function read(){try{const value=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(value)?value.filter(x=>typeof x==='string'):[]}catch{return []}}
+export default function useSavedTours(){const [saved,setSaved]=useState([]);useEffect(()=>{const sync=()=>setSaved(read());sync();window.addEventListener('saved-tours',sync);window.addEventListener('storage',sync);return()=>{window.removeEventListener('saved-tours',sync);window.removeEventListener('storage',sync)}},[]);function toggle(slug){const current=read();const next=current.includes(slug)?current.filter(x=>x!==slug):[...current,slug];try{localStorage.setItem(KEY,JSON.stringify(next))}catch{}setSaved(next);window.dispatchEvent(new Event('saved-tours'))}return {saved,toggle}}
