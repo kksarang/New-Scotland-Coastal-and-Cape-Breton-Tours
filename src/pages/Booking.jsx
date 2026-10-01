@@ -1,6 +1,91 @@
-import {useEffect,useState} from 'react';
-import {useSearchParams} from 'react-router-dom';
-import {Mail,MessageCircle,Phone,CheckCircle2} from 'lucide-react';
-import {business,tours,whatsapp} from '../data/tours';
-import {Title} from '../components/Shared';
-export default function Booking(){const [params]=useSearchParams();const [prepared,setPrepared]=useState(null);const serviceMap={'Airport transfers':'Airport Transfer','Cruise port pickup':'Cruise Pickup','Hotel transportation':'Taxi Service','Local taxi service':'Taxi Service','Long-distance rides':'Taxi Service','Private transportation':'Private Tour','Tour transportation':'Cape Breton Tour','Custom transfers':'Other'};const selectedService=serviceMap[params.get('service')]||params.get('service')||'Cape Breton Tour';const today=new Date().toLocaleDateString('en-CA');function submit(e){e.preventDefault();const data=Object.fromEntries(new FormData(e.currentTarget));if(data.date<today){e.currentTarget.elements.date.setCustomValidity('Please choose today or a future date.');e.currentTarget.elements.date.reportValidity();return}const message='Hello New Scotland Coastal and Cape Breton Tours, I would like to enquire about:\n\n'+Object.entries(data).filter(([,v])=>v).map(([k,v])=>k.replaceAll('_',' ')+': '+v).join('\n');setPrepared(message)}return <section className="wrap section booking-page"><div><Title as="h1" eyebrow="LET’S PLAN SOMETHING SPECIAL">Your Cape Breton<br/><em>journey starts here.</em></Title><p>Tell us a little about your plans. We’ll discuss availability, your itinerary and a personalised quote.</p><div className="booking-info"><h3>A conversation, then a journey.</h3><p>Submitting this form prepares your enquiry. You choose whether to send it through WhatsApp or your email app. Your booking is confirmed only after we agree the details with you.</p><a href="tel:+19025494542"><Phone size={18}/>{business.phone}</a><a href={'mailto:'+business.email}><Mail size={18}/>{business.email}</a></div><p className="fine-print">Prefer to keep it simple? Call or WhatsApp us directly.</p></div><form className="enquiry-form" onSubmit={submit}><h3>Tell us about your trip</h3><div className="form-grid"><label>Full name *<input name="Full_name" required autoComplete="name" maxLength="100"/></label><label>Email *<input name="Email" type="email" required autoComplete="email" maxLength="150"/></label><label>Phone *<input name="Phone" type="tel" required autoComplete="tel" minLength="7" maxLength="30" title="Enter a phone number with at least 7 characters."/></label><label>Service type *<select name="Service" defaultValue={['Cape Breton Tour','Taxi Service','Airport Transfer','Cruise Pickup','Private Tour','Other'].includes(selectedService)?selectedService:'Cape Breton Tour'}>{['Cape Breton Tour','Taxi Service','Airport Transfer','Cruise Pickup','Private Tour','Other'].map(v=><option key={v}>{v}</option>)}</select></label><label className="full">Tour preference<select name="Tour" defaultValue={params.get('tour')||''}><option value="">Help me choose / not applicable</option>{tours.map(t=><option key={t.slug} value={t.slug}>{t.title}</option>)}</select></label><label>Pickup location *<input name="Pickup_location" defaultValue={params.get('pickup')||''} required maxLength="200" placeholder="Hotel, airport, cruise terminal…"/></label><label>Destination *<input name="Destination" required maxLength="200" placeholder="A place or your preferred tour"/></label><label>Preferred date *<input name="date" type="date" required min={today} defaultValue={params.get('date')||''} onChange={e=>e.target.setCustomValidity('')}/></label><label>Preferred pickup time<input name="Pickup_time" type="time"/></label><label>Number of guests *<input name="Guests" type="number" required min="1" max="50" defaultValue={params.get('guests')||2}/></label><label className="full">Additional notes<textarea name="Notes" rows="4" maxLength="2500" defaultValue={params.get('notes')||params.get('service')||''} placeholder="Ship or flight details, luggage, accessibility needs, or places you’d love to see…"/></label></div><p className="fine-print">* Required. Guest capacity, accessibility, dates, pricing and pickup arrangements are confirmed directly with our team.</p><button className="button navy" type="submit">Prepare booking request <Mail size={18}/></button>{prepared&&<div className="prepared" role="status"><CheckCircle2 size={25}/><h3>Your enquiry is ready.</h3><p>Nothing has been sent yet. Choose a channel below, review the message and send it to us.</p><div className="actions"><a className="button navy" href={whatsapp(prepared)} target="_blank" rel="noreferrer"><MessageCircle size={18}/>Send via WhatsApp</a><a className="text-link" href={'mailto:'+business.email+'?subject='+encodeURIComponent('Cape Breton booking enquiry')+'&body='+encodeURIComponent(prepared)}>Open email enquiry <Mail size={18}/></a></div></div>}</form></section>}
+import {useRef, useState} from 'react';
+import {Link, useSearchParams} from 'react-router-dom';
+import {ArrowLeft, ArrowRight, CalendarDays, Check, CheckCircle2, Compass, Mail, MapPin, MessageCircle, Phone, UserRound} from 'lucide-react';
+import {business, tours, whatsapp} from '../data/tours';
+import {calculatePrice, initialGuests, localToday, money, packageRates, rateLabel} from '../data/pricing';
+import TripPrice, {GuestControl} from '../components/TripPrice';
+import Scene from '../components/Scene';
+import './booking.css';
+
+const services = ['Cape Breton Tour', 'Taxi Service', 'Airport Transfer', 'Cruise Pickup', 'Private Tour', 'Other'];
+const serviceMap = {'Airport transfers':'Airport Transfer','Cruise port pickup':'Cruise Pickup','Hotel transportation':'Taxi Service','Local taxi service':'Taxi Service','Long-distance rides':'Taxi Service','Private transportation':'Private Tour','Tour transportation':'Cape Breton Tour','Custom transfers':'Other'};
+
+export default function Booking() {
+  const [params] = useSearchParams();
+  const requestedService = serviceMap[params.get('service')] || params.get('service');
+  const [service, setService] = useState(services.includes(requestedService) ? requestedService : services[0]);
+  const [slug, setSlug] = useState(tours.some(t => t.slug === params.get('tour')) ? params.get('tour') : '');
+  const [guests, setGuests] = useState(initialGuests(params.get('guests')));
+  const [date, setDate] = useState(params.get('date') || '');
+  const [prepared, setPrepared] = useState(null);
+  const preparedRef = useRef(null);
+  const today = localToday();
+  const tourService = ['Cape Breton Tour', 'Private Tour', 'Cruise Pickup'].includes(service);
+  const tour = tourService ? tours.find(t => t.slug === slug) : null;
+  const total = calculatePrice(packageRates[tour?.slug], guests);
+
+  function submit(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.elements.date.value < localToday()) {
+      form.elements.date.setCustomValidity('Please choose today or a future date.');
+      form.elements.date.reportValidity();
+      return;
+    }
+    const data = Object.fromEntries(new FormData(form));
+    data.Tour = tour?.title || 'Tailored itinerary / no tour selected';
+    if (tour) data.Destination = tour.title;
+    data.Estimated_total = total === null ? 'Quote requested' : money(total) + ' — subject to confirmation; taxes and admission to be confirmed';
+    const message = 'Hello New Scotland Coastal and Cape Breton Tours, I would like to enquire about:\n\n' + Object.entries(data).filter(([, value]) => value).map(([key, value]) => key.replaceAll('_', ' ') + ': ' + value).join('\n');
+    setPrepared(message);
+    requestAnimationFrame(() => preparedRef.current?.focus());
+  }
+
+  return <div className="booking-experience">
+    <div className="wrap booking-shell">
+      <Link to={tour ? '/tours/' + tour.slug : '/tours'} className="booking-back"><ArrowLeft size={16}/>Back to experiences</Link>
+      <header className="booking-heading"><div><span className="booking-kicker">A LITTLE PLANNING. A GREAT ADVENTURE.</span><h1>Make it your kind of journey.</h1><p>The scenic route starts here. Share your plans and we’ll take care of the details.</p></div><span className="booking-reassurance"><CheckCircle2 size={18}/>No payment required</span></header>
+      <div className="booking-layout">
+        <form id="trip-details" className="booking-form" onSubmit={submit} onChange={() => setPrepared(null)}>
+          <section className="booking-section" aria-labelledby="experience-heading">
+            <div className="booking-section-heading"><span><Compass size={21}/></span><div><small>01 / YOUR EXPERIENCE</small><h2 id="experience-heading">Where will your story begin?</h2></div></div>
+            <div className="booking-fields">
+              <label className="field-wide">Service type<select name="Service" value={service} onChange={e => setService(e.target.value)}>{services.map(value => <option key={value}>{value}</option>)}</select></label>
+              {tourService && <label className="field-wide">Choose your package<select name="Tour" value={slug} onChange={e => setSlug(e.target.value)}><option value="">Help me choose an experience</option>{tours.map(t => <option key={t.slug} value={t.slug}>{t.title} — {rateLabel(t.slug)}</option>)}</select></label>}
+              <label>Travel date <span aria-hidden="true">*</span><input name="date" type="date" min={today} required value={date} onChange={e => {e.target.setCustomValidity(''); setDate(e.target.value);}}/></label>
+              <label>Pickup time <span className="field-optional">optional</span><input name="Pickup_time" type="time"/></label>
+            </div>
+            <GuestControl value={guests} onChange={value => {setGuests(value); setPrepared(null);}}/>
+            <p className="field-hint">Include all adults and children. We’ll confirm vehicle capacity for your group.</p>
+            <div className="mobile-trip-price"><TripPrice slug={tour?.slug} guests={guests}/></div>
+          </section>
+          <section className="booking-section" aria-labelledby="pickup-heading">
+            <div className="booking-section-heading"><span><MapPin size={21}/></span><div><small>02 / THE MEETING POINT</small><h2 id="pickup-heading">Let’s meet you along the way.</h2></div></div>
+            <div className="booking-fields">
+              <label className="field-wide">Pickup location <span aria-hidden="true">*</span><input name="Pickup_location" required maxLength="200" defaultValue={params.get('pickup') || ''} placeholder="Hotel, airport, cruise terminal or address"/></label>
+              {!tour && <label className="field-wide">Where would you like to go? <span aria-hidden="true">*</span><input name="Destination" required maxLength="200" placeholder="Destination or places you’d love to explore"/></label>}
+              <label className="field-wide">Anything we should know? <span className="field-optional">optional</span><textarea name="Notes" rows="3" maxLength="2500" defaultValue={params.get('notes') || ''} placeholder="Flight or ship details, children, luggage, accessibility needs, special stops…"/></label>
+            </div>
+          </section>
+          <section className="booking-section" aria-labelledby="contact-heading">
+            <div className="booking-section-heading"><span><UserRound size={21}/></span><div><small>03 / A WARM HELLO</small><h2 id="contact-heading">How can we reach you?</h2></div></div>
+            <div className="booking-fields">
+              <label className="field-wide">Full name <span aria-hidden="true">*</span><input name="Full_name" required autoComplete="name" maxLength="100" placeholder="Your first and last name"/></label>
+              <label>Email address <span aria-hidden="true">*</span><input name="Email" type="email" required autoComplete="email" maxLength="150" placeholder="you@example.com"/></label>
+              <label>Phone number <span aria-hidden="true">*</span><input name="Phone" type="tel" required autoComplete="tel" minLength="7" maxLength="30" placeholder="Include country code"/></label>
+            </div>
+          </section>
+          <div className="booking-submit"><p>Fields marked * are required. Your request opens in WhatsApp or email for you to review and send. We’ll confirm availability and the final quote directly.</p><button className="button navy" type="submit">Prepare my trip request<ArrowRight size={18}/></button><span><Check size={15}/>No charge. No commitment. Just a great place to start.</span></div>
+          {prepared && <section className="booking-prepared" tabIndex="-1" ref={preparedRef} aria-labelledby="prepared-heading"><CheckCircle2 size={30}/><h2 id="prepared-heading">Your next adventure is one hello away.</h2><p>Your enquiry is ready. Nothing has been sent yet. Review your details and choose how to send them.</p><details><summary>Review your request</summary><pre>{prepared}</pre></details><div className="actions"><a className="button navy" href={whatsapp(prepared)} target="_blank" rel="noreferrer"><MessageCircle size={18}/>Send via WhatsApp</a><a className="text-link" href={'mailto:' + business.email + '?subject=' + encodeURIComponent('Cape Breton booking enquiry') + '&body=' + encodeURIComponent(prepared)}><Mail size={17}/>Open email</a></div></section>}
+        </form>
+        <aside className="booking-sidebar" aria-label="Your trip summary">
+          <div className="trip-summary">
+            <div className="summary-image"><Scene name={tour?.image || 'coast'}/><span>Your island escape</span><small>Scenic illustration</small></div>
+            <div className="summary-content"><span className="booking-kicker">YOUR JOURNEY, AT A GLANCE</span><h2>{tour?.title || (tourService ? 'A day, made for you.' : service)}</h2><p className="summary-location"><MapPin size={14}/>Cape Breton Island, Nova Scotia</p><div className="summary-facts"><span><CalendarDays size={18}/>{date ? new Date(date + 'T12:00:00').toLocaleDateString('en-CA', {day:'numeric',month:'long',year:'numeric'}) : 'Your travel date'}</span><span><Compass size={18}/>{tour?.category || service}</span></div><TripPrice slug={tour?.slug} guests={guests}/><div className="summary-inclusions"><span><Check size={16}/>Your own private group</span><span><Check size={16}/>Plans made with a local team</span><span><Check size={16}/>Pickup agreed around your plans</span></div></div>
+          </div>
+          <div className="booking-help"><span className="help-icon"><MessageCircle size={22}/></span><div><h3>A real person. A little local advice.</h3><p>Need a hand planning your day? We’re a conversation away.</p><a href={'tel:' + business.phone.replaceAll(' ', '')}><Phone size={14}/>{business.phone}</a><a href={whatsapp()} target="_blank" rel="noreferrer">Chat on WhatsApp <ArrowRight size={14}/></a></div></div>
+        </aside>
+      </div>
+    </div>
+  </div>;
+}
