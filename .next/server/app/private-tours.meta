@@ -1,0 +1,35 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/private-tours/layout,_N_T_/private-tours/page,_N_T_/private-tours"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/_index",
+    "/private-tours/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 0,
+    "slots": {
+      "children": {
+        "hints": 64,
+        "slots": {
+          "children": {
+            "hints": 160,
+            "slots": null
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/c15a4a931e073d4f6ea4600d8de23a0257275252870428d48a2d6bc8c01bcaec/$/private-tours",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/private-tours/page"
+    },
+    "isFallback": false
+  }
+}

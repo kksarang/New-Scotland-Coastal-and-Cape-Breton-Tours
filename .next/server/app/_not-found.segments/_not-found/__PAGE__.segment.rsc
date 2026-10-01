@@ -1,0 +1,22 @@
+1:"$Sreact.fragment"
+2:I[5500,["/_next/static/chunks/0hljor89xe8hf.js","/_next/static/chunks/3y6ph63zgg15-.js"],"Image"]
+3:I[22016,["/_next/static/chunks/0hljor89xe8hf.js","/_next/static/chunks/3y6ph63zgg15-.js"],""]
+4:I[97367,["/_next/static/chunks/0hljor89xe8hf.js"],"OutletBoundary"]
+5:"$Sreact.suspense"
+9:I[97367,["/_next/static/chunks/0hljor89xe8hf.js"],"ViewportBoundary"]
+a:I[97367,["/_next/static/chunks/0hljor89xe8hf.js"],"MetadataBoundary"]
+b:I[27201,["/_next/static/chunks/0hljor89xe8hf.js"],"IconMark"]
+d:I[39756,["/_next/static/chunks/0hljor89xe8hf.js"],"default"]
+e:I[37457,["/_next/static/chunks/0hljor89xe8hf.js"],"default"]
+8:X
+10:X
+10:C
+0:{"buildId":"CmtR6-hsVzyKT9r5uBVCQ","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"relative min-h-screen flex items-center justify-center overflow-hidden","children":[["$","$L2",null,{"src":"https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1920&q=80","alt":"Cape Breton lighthouse","fill":true,"priority":true,"sizes":"100vw","className":"object-cover"}],["$","div",null,{"className":"absolute inset-0 bg-navy/70"}],["$","div",null,{"className":"relative z-10 text-center px-6 max-w-lg mx-auto","children":[["$","span",null,{"className":"font-serif text-8xl text-champagne block mb-4","children":"404"}],["$","h1",null,{"className":"font-serif text-3xl md:text-4xl text-white mb-4","children":"This Horizon Doesn't Exist"}],["$","p",null,{"className":"font-sans text-base text-white/70 leading-relaxed mb-8","children":"The page you are looking for couldn't be found — but Cape Breton is full of roads worth taking. Let us point you somewhere beautiful."}],["$","div",null,{"className":"flex flex-col sm:flex-row gap-4 justify-center","children":[["$","$L3",null,{"href":"/","className":"btn-primary","children":"Back to Home"}],["$","$L3",null,{"href":"/tours","className":"btn-outline","children":"Explore Tours"}]]}]]}]]}],[["$","script","script-0",{"src":"/_next/static/chunks/3y6ph63zgg15-.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":"$@7","staleTime":"$8","varyParams":null},{"rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L9",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$La",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Page Not Found | New Scotland Coastal"}],["$","meta","1",{"name":"description","content":"The page you are looking for could not be found."}],["$","meta","2",{"name":"robots","content":"index, follow"}],["$","meta","3",{"property":"og:title","content":"New Scotland Coastal & Cape Breton Tours"}],["$","meta","4",{"property":"og:description","content":"Private coastal tours, sightseeing experiences, and personalised transport along the Cabot Trail and beyond. Explore Cape Breton and Nova Scotia with a local guide."}],["$","meta","5",{"property":"og:url","content":"https://newscotlandcapetours.com"}],["$","meta","6",{"property":"og:site_name","content":"New Scotland Coastal & Cape Breton Tours"}],["$","meta","7",{"property":"og:locale","content":"en_CA"}],["$","meta","8",{"property":"og:type","content":"website"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"New Scotland Coastal & Cape Breton Tours"}],["$","meta","11",{"name":"twitter:description","content":"Private coastal tours, sightseeing experiences, and personalised transport along the Cabot Trail and beyond. Explore Cape Breton and Nova Scotia with a local guide."}],["$","link","12",{"rel":"icon","href":"/favicon.ico?favicon.2vob68tjqpejf.ico","sizes":"256x256","type":"image/x-icon"}],["$","$Lb","13",{}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isPartial":"$@c","staleTime":"$8","varyParams":null},{"rsc":["$","$1","c",{"children":[null,["$","$Ld",null,{"parallelRouterKey":"children","template":["$","$Le",null,{}]}]]}],"isPartial":"$@f","staleTime":"$8","varyParams":"$10"}],"isUpgradeableISRFallback":false,"a":"$@11","rootVaryParams":null,"needsRuntimeRequest":"$@12"}
+6:null
+12:true
+8:300
+8:C
+11:0
+c:"$undefined"
+f:"$undefined"
+7:"$undefined"

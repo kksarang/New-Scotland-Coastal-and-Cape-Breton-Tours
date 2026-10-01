@@ -1,0 +1,15 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
+  "/api/enquiry/route": "/api/enquiry",
+  "/contact/page": "/contact",
+  "/favicon.ico/route": "/favicon.ico",
+  "/gallery/page": "/gallery",
+  "/page": "/",
+  "/private-tours/page": "/private-tours",
+  "/robots.txt/route": "/robots.txt",
+  "/sitemap.xml/route": "/sitemap.xml",
+  "/tours/[slug]/page": "/tours/[slug]",
+  "/tours/page": "/tours"
+}
