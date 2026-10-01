@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { TOURS } from "@/lib/tours";
 import { SITE } from "@/lib/config";
+export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE.url;

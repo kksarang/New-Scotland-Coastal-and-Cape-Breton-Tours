@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { TOURS } from "@/lib/tours";
 import TourCard from "@/components/ui/TourCard";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -97,8 +98,8 @@ export default function ToursPage() {
             light
           />
           <div className="mt-10 flex justify-center gap-4 flex-wrap">
-            <a href="/tours/custom-private-cape-breton" className="btn-primary">Custom Private Tour</a>
-            <a href="/contact" className="btn-outline">Send an Enquiry</a>
+            <Link href="/tours/custom-private-cape-breton" className="btn-primary">Custom Private Tour</Link>
+            <Link href="/contact" className="btn-outline">Send an Enquiry</Link>
           </div>
         </div>
       </section>
