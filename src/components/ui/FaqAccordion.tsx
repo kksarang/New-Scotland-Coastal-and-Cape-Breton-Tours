@@ -15,6 +15,7 @@ interface FaqAccordionProps {
 export default function FaqAccordion({ items, light = false }: FaqAccordionProps) {
   const [open, setOpen] = useState<number | null>(null);
 
+  const border = light ? "border-white/20" : "border-ivory-warm";
   const questionColor = light ? "text-ivory" : "text-navy";
   const answerColor = light ? "text-ivory/75" : "text-muted";
   const iconColor = light ? "text-champagne" : "text-teal";
@@ -36,7 +37,6 @@ export default function FaqAccordion({ items, light = false }: FaqAccordionProps
             </span>
           </button>
           <div
-            hidden={open !== i}
             style={{
               maxHeight: open === i ? "400px" : "0",
               overflow: "hidden",

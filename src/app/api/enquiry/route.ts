@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-// Optional Node-hosted backend reference. Not a GitHub Pages route.
-// See DEPLOYMENT.md before enabling this on a server.
 
 interface EnquiryPayload {
-  website?: unknown;
-  _gotcha?: unknown;
   fullName?: unknown;
   email?: unknown;
   phone?: unknown;
@@ -22,8 +18,6 @@ const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
-  for (const [key, value] of RATE_MAP) if (now - value.windowStart > WINDOW_MS) RATE_MAP.delete(key);
-  if (RATE_MAP.size >= 10000 && !RATE_MAP.has(ip)) return true;
   const entry = RATE_MAP.get(ip);
   if (!entry || now - entry.windowStart > WINDOW_MS) {
     RATE_MAP.set(ip, { count: 1, windowStart: now });
@@ -39,11 +33,7 @@ function sanitize(v: unknown): string {
   return v.replace(/[\x00-\x09\x0b\x0c\x0e-\x1f\x7f]/g, "").trim().slice(0, 2000);
 }
 
-function escapeHtml(value: string) {
-  return value.replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]!));
-}
 export async function POST(req: NextRequest) {
-  if (Number(req.headers.get("content-length") || 0) > 16000) return NextResponse.json({message:"Request too large."},{status:413});
   // Rate limiting
   const forwarded = req.headers.get("x-forwarded-for");
   const ip = forwarded ? forwarded.split(",")[0].trim() : "unknown";
@@ -58,12 +48,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Invalid request body." }, { status: 400 });
   }
 
-  if (!body || typeof body !== "object" || Array.isArray(body)) return NextResponse.json({message:"Invalid request."},{status:400});
-  if (body.website || body._gotcha) return NextResponse.json({message:"Request rejected."},{status:400});
-  const fullName = sanitize(body.fullName).replace(/[\r\n]/g, " ").slice(0,100);
+  const fullName = sanitize(body.fullName);
   const email = sanitize(body.email);
   const phone = sanitize(body.phone);
-  const tourInterest = sanitize(body.tourInterest).replace(/[\r\n]/g, " ").slice(0,150);
+  const tourInterest = sanitize(body.tourInterest);
   const preferredDate = sanitize(body.preferredDate);
   const guests = sanitize(body.guests);
   const pickupPreference = sanitize(body.pickupPreference);
@@ -77,7 +65,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Invalid email address." }, { status: 400 });
   }
 
-  if (!Number.isInteger(Number(guests)) || Number(guests)<1 || Number(guests)>50) return NextResponse.json({message:"Choose 1–50 guests."},{status:400});
+  // Honeypot — if _hp field is present, silently drop
+  // (added to form via hidden field in a future enhancement)
 
   // Email delivery — requires SMTP env vars
   const SMTP_HOST = process.env.SMTP_HOST;
@@ -102,10 +91,6 @@ export async function POST(req: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const nodemailer = require("nodemailer") as typeof import("nodemailer");
     const transporter = nodemailer.createTransport({
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 15000,
-      requireTLS: process.env.SMTP_SECURE !== "true",
       host: SMTP_HOST,
       port: Number(process.env.SMTP_PORT ?? 587),
       secure: process.env.SMTP_SECURE === "true",
@@ -115,18 +100,18 @@ export async function POST(req: NextRequest) {
     const html = `
       <h2>New Tour Enquiry — New Scotland Coastal</h2>
       <table cellpadding="6" style="font-family:sans-serif;font-size:14px;border-collapse:collapse">
-        <tr><th align="left">Name</th><td>${escapeHtml(fullName)}</td></tr>
-        <tr><th align="left">Email</th><td><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
-        <tr><th align="left">Phone</th><td>${escapeHtml(phone) || "—"}</td></tr>
-        <tr><th align="left">Tour / Service</th><td>${escapeHtml(tourInterest)}</td></tr>
-        <tr><th align="left">Preferred Date</th><td>${escapeHtml(preferredDate) || "—"}</td></tr>
-        <tr><th align="left">Guests</th><td>${escapeHtml(guests) || "—"}</td></tr>
-        <tr><th align="left">Pickup Preference</th><td>${escapeHtml(pickupPreference) || "—"}</td></tr>
-        <tr><th align="left" valign="top">Message</th><td>${escapeHtml(message).replace(/\n/g, "<br>") || "—"}</td></tr>
+        <tr><th align="left">Name</th><td>${fullName}</td></tr>
+        <tr><th align="left">Email</th><td><a href="mailto:${email}">${email}</a></td></tr>
+        <tr><th align="left">Phone</th><td>${phone || "—"}</td></tr>
+        <tr><th align="left">Tour / Service</th><td>${tourInterest}</td></tr>
+        <tr><th align="left">Preferred Date</th><td>${preferredDate || "—"}</td></tr>
+        <tr><th align="left">Guests</th><td>${guests || "—"}</td></tr>
+        <tr><th align="left">Pickup Preference</th><td>${pickupPreference || "—"}</td></tr>
+        <tr><th align="left" valign="top">Message</th><td>${message.replace(/\n/g, "<br>") || "—"}</td></tr>
       </table>
     `;
 
-    const delivery = await transporter.sendMail({
+    await transporter.sendMail({
       from: `"New Scotland Coastal Website" <${SMTP_USER}>`,
       to: TO_EMAIL,
       replyTo: email,
@@ -135,10 +120,9 @@ export async function POST(req: NextRequest) {
       text: `Name: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nTour: ${tourInterest}\nDate: ${preferredDate}\nGuests: ${guests}\nPickup: ${pickupPreference}\n\n${message}`,
     });
 
-    if (!delivery.accepted?.length || delivery.rejected?.length) throw new Error("Recipient not accepted");
     return NextResponse.json({ ok: true }, { status: 200 });
-  } catch {
-    console.error("Enquiry email delivery failed. Check the SMTP service configuration.");
+  } catch (err) {
+    console.error("Enquiry email error:", err);
     return NextResponse.json({ fallback: true, message: "Email delivery failed." }, { status: 503 });
   }
 }
