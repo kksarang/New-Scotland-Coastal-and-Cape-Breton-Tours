@@ -28,6 +28,7 @@ src/
     about/              # About
     gallery/            # Gallery
     contact/            # Plan Your Trip / Contact
+    api/enquiry/        # Enquiry form API endpoint
     layout.tsx          # Root layout (fonts, header, footer)
     not-found.tsx       # Custom 404
     sitemap.ts          # Auto-generated sitemap
@@ -60,15 +61,42 @@ Replace the Unsplash URLs in `src/lib/tours.ts` and each page file with your own
 
 ---
 
-## Enquiry Delivery and Deployment
+## Enquiry Email Configuration
 
-The website is now configured for **GitHub Pages static export**. Run `npm run build` and publish `out/`; do not publish the raw Next.js source. The included GitHub Actions workflow builds and deploys main after the repository’s Pages source is set to **GitHub Actions**.
+The enquiry form at `/contact` (and tour sidebar forms) posts to `/api/enquiry`.
 
-Automatic enquiry delivery needs a verified external HTTPS endpoint, configured with `NEXT_PUBLIC_ENQUIRY_ENDPOINT` at build time. Formspree is supported, as is a custom JSON endpoint returning `{ "ok": true }` after acceptance by the mail provider. Until configured, the form prepares a clearly labelled email draft for the visitor to send.
+**Without SMTP configuration:** The API returns a fallback signal that opens a pre-filled `mailto:` draft in the visitor's email client — honest, transparent, and always functional.
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for recipient verification, environment variables, the Pages workflow and live inbox checks. SMTP credentials must never be placed in browser code. The old Node-hosted handler is retained under `server/next-enquiry-route.ts`, outside the static site.
+**To enable server-side delivery**, create a `.env.local` file:
 
-Validation: `npm test`, `npm run lint`, and `npm run build`.
+```env
+SMTP_HOST=smtp.yourprovider.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your@email.com
+SMTP_PASS=your-smtp-password
+ENQUIRY_TO_EMAIL=newscotlandcapetours@gmail.com
+```
+
+Gmail users: use an [App Password](https://support.google.com/accounts/answer/185833) with `smtp.gmail.com` on port 587.
+
+---
+
+## Deployment
+
+### Vercel (recommended)
+
+```bash
+npx vercel
+```
+
+Add environment variables in the Vercel dashboard under **Settings → Environment Variables**.
+
+### Other platforms
+
+Any Node.js host that supports Next.js works. The `/api/enquiry` route requires a server-side runtime (not purely static export).
+
+---
 
 ## Business Details Awaiting Confirmation
 
