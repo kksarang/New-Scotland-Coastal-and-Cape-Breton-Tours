@@ -1,1 +1,21 @@
-/* /index.html 200
+# Only used on Netlify-style hosts. GitHub Pages ignores this file.
+/tours /cape-breton-tours/ 301
+/tours/ /cape-breton-tours/ 301
+/taxi-service /taxi-sydney-nova-scotia/ 301
+/taxi-service/ /taxi-sydney-nova-scotia/ 301
+/cruise-excursions /sydney-cruise-port-tours/ 301
+/cruise-excursions/ /sydney-cruise-port-tours/ 301
+/tours/cabot-trail /cabot-trail-tours/ 301
+/tours/cabot-trail/ /cabot-trail-tours/ 301
+/tours/fortress-of-louisbourg /fortress-of-louisbourg-tour/ 301
+/tours/fortress-of-louisbourg/ /fortress-of-louisbourg-tour/ 301
+/tours/skyline-trail /cape-breton-highlands-tour/ 301
+/tours/skyline-trail/ /cape-breton-highlands-tour/ 301
+/tours/highland-village /highland-village-tour/ 301
+/tours/highland-village/ /highland-village-tour/ 301
+/tours/cape-breton-coastal /coastal-cape-breton-tour/ 301
+/tours/cape-breton-coastal/ /coastal-cape-breton-tour/ 301
+/tours/sydney-cape-breton /sydney-nova-scotia-tours/ 301
+/tours/sydney-cape-breton/ /sydney-nova-scotia-tours/ 301
+/tours/private-tour /private-cape-breton-tours/ 301
+/tours/private-tour/ /private-cape-breton-tours/ 301

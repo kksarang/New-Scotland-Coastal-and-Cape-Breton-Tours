@@ -4,6 +4,7 @@ import {BrowserRouter} from 'react-router-dom';
 import App from './App';
 import './style.css';
 import './marketplace.css';
+import './content.css';
 const root=document.getElementById('root');
 const app=<BrowserRouter><App/></BrowserRouter>;
 if(root.hasChildNodes())hydrateRoot(root,app);else createRoot(root).render(app);

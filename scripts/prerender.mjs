@@ -1,16 +1,19 @@
+// Pre-renders every route with its own metadata, then writes the 404 page, redirect pages for old URLs and sitemap.xml.
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {render} from '../.ssr/entry-server.js';
-import {tours,business} from '../src/data/tours.js';
-const pages={'/':'Cape Breton Tours & Taxi Service','/about':'Our Story','/tours':'Private Cape Breton Tours','/taxi-service':'Cape Breton Taxi & Airport Transfers','/gallery':'Cape Breton Travel Gallery','/book':'Plan Your Cape Breton Journey','/contact':'Contact Us','/privacy':'Privacy','/terms':'Booking Information'};
-for(const tour of tours)pages['/tours/'+tour.slug]=tour.title+' Private Tour';
+import {render,routes,notFound,redirects,renderHead,business,ogImage} from '../.ssr/entry-server.js';
 const template=await fs.readFile('dist/index.html','utf8');
-const esc=s=>s.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-for(const [route,title] of Object.entries(pages)){
- const tour=tours.find(t=>route==='/tours/'+t.slug);const description=tour?.description||'Discover Cape Breton with private scenic tours, Cabot Trail journeys and comfortable taxi transportation from Sydney, Nova Scotia.';const fullTitle=title+' | New Scotland Coastal Tours';
- const schema={'@context':'https://schema.org','@type':'LocalBusiness',name:business.name,url:business.website,telephone:business.phone,email:business.email,address:{'@type':'PostalAddress',streetAddress:'193 Henry St',addressLocality:'Sydney',addressRegion:'NS',postalCode:'B1N 2H4',addressCountry:'CA'}};
- const metadata=`<link rel="canonical" href="${business.website}${route}"/><meta property="og:title" content="${esc(fullTitle)}"/><meta property="og:description" content="${esc(description)}"/><meta property="og:type" content="website"/><meta property="og:url" content="${business.website}${route}"/><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="${esc(fullTitle)}"/><meta name="twitter:description" content="${esc(description)}"/><script type="application/ld+json" id="business-schema">${JSON.stringify(schema).replaceAll('<','\\u003c')}</script>`;
- const html=template.replace(/<title>.*?<\/title>/,`<title>${esc(fullTitle)}</title>`).replace(/<meta name="description"[^>]*>/,`<meta name="description" content="${esc(description)}"/>`).replace('</head>',metadata+'</head>').replace('<div id="root"></div>',`<div id="root">${render(route)}</div>`);
- const file=route==='/'?'dist/index.html':path.join('dist',route,'index.html');await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,html);
-}
-console.log(`Pre-rendered ${Object.keys(pages).length} pages with individual metadata.`);
+if(!template.includes('<!--app-head-->'))throw new Error('index.html is missing the <!--app-head--> placeholder');
+const page=(route,location)=>template.replace('<!--app-head-->',renderHead(route)).replace('<div id="root"></div>',`<div id="root">${render(location)}</div>`);
+const write=async(file,html)=>{await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,html)};
+for(const route of routes)await write(route.path==='/'?'dist/index.html':path.join('dist',route.path,'index.html'),page(route,route.path));
+// GitHub Pages serves 404.html with a 404 status for unknown URLs.
+await write('dist/404.html',page(notFound,'/this-page-does-not-exist/'));
+// Static hosts can't send 301s, so old URLs get an instant redirect page with a canonical to the new URL.
+const esc=s=>s.replaceAll('&','&amp;').replaceAll('"','&quot;');
+for(const [from,to] of Object.entries(redirects)){const target=business.website+to;await write(path.join('dist',from,'index.html'),`<!doctype html><html lang="en-CA"><head><meta charset="UTF-8"/><title>Moved</title><link rel="canonical" href="${esc(target)}"/><meta http-equiv="refresh" content="0; url=${esc(to)}"/><script>location.replace(${JSON.stringify(to)}+location.search+location.hash)</script></head><body><p>This page has moved to <a href="${esc(to)}">${esc(target)}</a>.</p></body></html>`)}
+const today=new Date().toISOString().slice(0,10);
+const indexable=routes.filter(r=>!r.noindex);
+const sitemap=`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n`+indexable.map(r=>`<url><loc>${business.website}${r.path}</loc><lastmod>${r.guide?.updated||today}</lastmod><image:image><image:loc>${business.website}${ogImage(r.image)}</image:loc></image:image></url>`).join('\n')+'\n</urlset>\n';
+await fs.writeFile('dist/sitemap.xml',sitemap);
+console.log(`Pre-rendered ${routes.length} pages, a 404 page and ${Object.keys(redirects).length} redirects. Sitemap lists ${indexable.length} URLs.`);

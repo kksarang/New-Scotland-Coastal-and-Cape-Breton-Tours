@@ -1,8 +1,12 @@
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase /
-RewriteRule ^index\.html$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.html [L]
-</IfModule>
+# Only used if the site is hosted on Apache (e.g. Hostinger). GitHub Pages ignores this file.
+ErrorDocument 404 /404.html
+RedirectMatch 301 ^/tours/?$ /cape-breton-tours/
+RedirectMatch 301 ^/taxi-service/?$ /taxi-sydney-nova-scotia/
+RedirectMatch 301 ^/cruise-excursions/?$ /sydney-cruise-port-tours/
+RedirectMatch 301 ^/tours/cabot-trail/?$ /cabot-trail-tours/
+RedirectMatch 301 ^/tours/fortress-of-louisbourg/?$ /fortress-of-louisbourg-tour/
+RedirectMatch 301 ^/tours/skyline-trail/?$ /cape-breton-highlands-tour/
+RedirectMatch 301 ^/tours/highland-village/?$ /highland-village-tour/
+RedirectMatch 301 ^/tours/cape-breton-coastal/?$ /coastal-cape-breton-tour/
+RedirectMatch 301 ^/tours/sydney-cape-breton/?$ /sydney-nova-scotia-tours/
+RedirectMatch 301 ^/tours/private-tour/?$ /private-cape-breton-tours/
