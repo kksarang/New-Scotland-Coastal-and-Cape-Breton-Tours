@@ -16,5 +16,5 @@ return null}
 export function schemaFor(route){
 const crumbs=breadcrumb(route);const entity=mainEntity(route);
 const webpage={'@type':route.type==='home'?'WebPage':route.path==='/contact/'?'ContactPage':route.path==='/about/'?'AboutPage':'WebPage','@id':url(route.path)+'#webpage',url:url(route.path),name:route.title,description:route.description,isPartOf:{'@id':siteId},about:{'@id':orgId},inLanguage:'en-CA',...(crumbs?{breadcrumb:{'@id':crumbs['@id']}}:{}),...(entity?{mainEntity:{'@id':entity['@id']}}:{})};
-const website={'@type':'WebSite','@id':siteId,url:url('/'),name:business.shortName,alternateName:business.name,publisher:{'@id':orgId},inLanguage:'en-CA'};
+const website={'@type':'WebSite','@id':siteId,url:url('/'),name:business.name,alternateName:business.alternateNames,publisher:{'@id':orgId},inLanguage:'en-CA'};
 return {'@context':'https://schema.org','@graph':[organization(),website,webpage,crumbs,entity].filter(Boolean)}}

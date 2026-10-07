@@ -28,6 +28,8 @@ jobs:
         env:
           # Set the GA_MEASUREMENT_ID repository variable (G-XXXXXXX) to enable Google Analytics.
           VITE_GA_ID: ${{ vars.GA_MEASUREMENT_ID }}
+          # Public Formspree form ID (e.g. xyzabcde) — set FORMSPREE_FORM_ID in repository variables.
+          VITE_FORMSPREE_FORM_ID: ${{ vars.FORMSPREE_FORM_ID }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

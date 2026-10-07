@@ -11,7 +11,7 @@ The supplied Hostinger screenshot shows `A @ → 2.57.91.91` and `CNAME www → 
 5. Find the assigned website IP in Hostinger’s hosting dashboard. If the domain uses Hostinger nameservers and is assigned to the same account, the hosting IP may be detected automatically. Otherwise set `A @` to the **actual hosting IP**. Keep `CNAME www → newscotlandcapetours.com` for this configuration. Do not reuse the screenshot’s IP without checking it against your hosting plan.
 6. Keep email-related MX, SPF, DKIM and DMARC records. Do not use “Reset DNS records.”
 7. Activate SSL for the domain and `www` in the hosting dashboard. After the certificate is active, enable HTTPS redirection and choose the apex domain as canonical.
-8. Verify the homepage and a direct visit to `/tours/cabot-trail/`, then test mobile navigation and prepare an enquiry. The customer must still send the email/WhatsApp message.
+8. Verify the homepage and a direct visit to `/tours/cabot-trail/`, then test mobile navigation and send a test enquiry from `/book/` or `/contact/`. With Formspree configured (`FORMSPREE_FORM_ID` in GitHub Actions or Hostinger build env), the form should show success after the provider accepts the submission; confirm the notification at `newscotlandcapetours@gmail.com`. WhatsApp/SMS links are optional follow-ups and open the visitor’s apps separately.
 9. Check both `https://newscotlandcapetours.com` and `https://www.newscotlandcapetours.com`, then submit `/sitemap.xml` to Google Search Console.
 
 ## If you own only the domain

@@ -4,7 +4,8 @@ import {tours} from '../data/tours';
 import {destinations} from '../data/destinations';
 import {guides} from '../data/guides';
 import {servicePages} from '../data/services';
-const brand='New Scotland Cape Tours';
+import {business} from '../data/business';
+const brand=business.name;
 const page=(path,title,description,extra={})=>({path,title,description,image:'coast',type:'page',crumbs:[],priority:0.6,...extra});
 export const routes=[
 page('/','Cape Breton Tours & Taxi Service in Sydney, NS | '+brand,'Explore Cape Breton with private tours from Sydney, Nova Scotia. Cabot Trail tours, Louisbourg, cruise shore excursions, coastal sightseeing and local taxi service. Call +1 902-549-4542.',{type:'home',priority:1}),
@@ -16,7 +17,7 @@ page('/destinations/','Cape Breton Destinations: Cabot Trail, Louisbourg & More'
 page('/guides/','Cape Breton Travel Guides | Local Tips from Sydney, NS','Practical Cape Breton travel guides from a Sydney, Nova Scotia tour operator: the Cabot Trail, cruise port days, fall colours and one-day itineraries.',{crumbs:[['Travel guides']],priority:0.6}),
 ...guides.map(g=>page(g.path,g.seoTitle,g.metaDescription,{type:'article',image:g.image,crumbs:[['Travel guides','/guides/'],[g.title]],guide:g,priority:0.6})),
 page('/about/','About Us | New Scotland Coastal & Cape Breton Tours, Sydney NS','Meet New Scotland Coastal & Cape Breton Tours, a local tour and transportation business in Sydney, Nova Scotia offering private Cape Breton tours and taxi service.',{crumbs:[['About']],priority:0.5}),
-page('/contact/','Contact Us | Cape Breton Tours & Taxi in Sydney, NS','Contact New Scotland Coastal & Cape Breton Tours at 193 Henry St, Sydney, Nova Scotia. Call +1 902-549-4542, email or WhatsApp to plan a tour or book a ride.',{crumbs:[['Contact']],priority:0.6}),
+page('/contact/','Contact Us | '+brand,'Contact New Scotland Coastal & Cape Breton Tours at 193 Henry St, Sydney, Nova Scotia. Call +1 902-549-4542, email or WhatsApp to plan a tour or send an enquiry.',{crumbs:[['Contact']],priority:0.6}),
 page('/gallery/','Cape Breton Travel Gallery | '+brand,'Scenic artwork and travel inspiration from Cape Breton Island and Nova Scotia: the Cabot Trail, Louisbourg, coastal villages and autumn colours.',{crumbs:[['Gallery']],priority:0.3}),
 page('/book/','Request a Tour or Ride | '+brand,'Send a tour, taxi, airport transfer or cruise pickup request to New Scotland Coastal & Cape Breton Tours in Sydney, Nova Scotia.',{crumbs:[['Book']],noindex:true}),
 page('/privacy/','Privacy Policy | '+brand,'How New Scotland Coastal & Cape Breton Tours handles the information you share through this website.',{crumbs:[['Privacy policy']],priority:0.2}),

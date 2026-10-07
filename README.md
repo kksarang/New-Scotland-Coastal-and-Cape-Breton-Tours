@@ -30,8 +30,20 @@ React, Vite, React Router, Tailwind CSS, Lucide icons and Framer Motion. Source 
 - Tours (one landing page each): `src/data/tours.js`. Destinations, guides and service pages: `destinations.js`, `guides.js`, `services.js`. Reviews: `reviews.js`. Prices: `pricing.js`.
 - Page titles, descriptions, sitemap and redirects: `src/seo/routes.js`. Structured data: `src/seo/schema.js`.
 - Images: originals in `assets/images/`; run `scripts/optimize-images.sh` (ImageMagick) to regenerate `public/images/`.
-- Analytics: set the `GA_MEASUREMENT_ID` repository variable to enable GA4. Events are defined in `src/lib/analytics.js`.
-- Enquiry forms prepare a customer-controlled WhatsApp or email message. They do not send email from a server, store enquiries, accept payment or confirm reservations.
+- Analytics: set the `GA_MEASUREMENT_ID` repository variable to enable GA4. Events are defined in `src/lib/analytics.js`. Contact-link events never include message bodies or query strings.
+- Enquiries: booking and quote forms submit to [Formspree](https://formspree.io/) when `VITE_FORMSPREE_FORM_ID` is set at build time. Shared logic lives in `src/lib/enquirySubmit.js`. WhatsApp, SMS and mailto links remain optional alternatives and open the visitor’s apps separately.
+
+### Formspree setup (required for automatic enquiries)
+
+1. Sign in at [formspree.io](https://formspree.io/) with a business-owned account (not a shared personal password in this repo).
+2. Create a new form. Set the notification email to `newscotlandcapetours@gmail.com` in the Formspree dashboard (do not rely on a hidden `recipient` field in the browser).
+3. Under **Settings → Form**, enable **Reply-To** using the visitor field named `email` (lowercase).
+4. Copy the public form ID from the form endpoint (`https://formspree.io/f/xxxxxxxx` → `xxxxxxxx`).
+5. Local dev: copy `.env.example` to `.env` and set `VITE_FORMSPREE_FORM_ID=xxxxxxxx`, then `npm run dev`.
+6. Production (GitHub Pages): in the GitHub repository go to **Settings → Secrets and variables → Actions → Variables** and add `FORMSPREE_FORM_ID` with the same value. Push to `main` or re-run the deploy workflow so the build picks up the variable (Vite inlines env vars at build time; changing the variable requires a rebuild).
+7. Send one clearly labelled test enquiry from the live site. Confirm the submission appears in Formspree and that notification email arrives with a working **Reply-To** to the visitor address.
+
+Never commit Formspree account passwords, Gmail app passwords or private API keys. Only the public form ID belongs in `VITE_FORMSPREE_FORM_ID`.
 - No invented pricing, durations, inclusions or reviews are displayed. See `SEO-AUDIT.md` for what still needs owner information.
 
 ## Deployment
