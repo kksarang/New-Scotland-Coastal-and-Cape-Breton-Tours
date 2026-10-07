@@ -1,0 +1,159 @@
+/* Autumn / fall seasonal palette — warm creams, forest green, copper & gold accents. */
+:root {
+  --season-bg: #faf6f0;
+  --season-bg-soft: #f3ebe0;
+  --season-ink: #1f2e28;
+  --season-muted: #5c655c;
+  --season-accent: #2f6b52;
+  --season-accent-hover: #255a44;
+  --season-accent-soft: #e8f0ea;
+  --season-gold: #c9924a;
+  --season-gold-soft: #f5e6cf;
+  --season-copper: #a65f2a;
+  --season-hero-shade: linear-gradient(180deg, #1a1208aa 0%, #1a151099 42%, #120f0cbb 100%);
+}
+
+html {
+  background: var(--season-bg);
+}
+
+body {
+  background: var(--season-bg);
+  color: var(--season-ink);
+}
+
+.market-header {
+  background: #fffef9;
+  border-bottom-color: #e8dfd2;
+}
+
+.market-brand {
+  color: var(--season-accent);
+}
+
+.market-subnav {
+  background: #fffef9;
+  border-bottom-color: #e8dfd2;
+}
+
+.market-subnav a.active {
+  color: var(--season-copper);
+}
+
+.button.navy,
+.cta .button,
+.market-header .header-cta,
+.experience-search button,
+.mobile-actions a:last-child {
+  background: var(--season-accent);
+}
+
+.button.navy:hover,
+.cta .button:hover {
+  background: var(--season-accent-hover);
+}
+
+.button.gold {
+  background: var(--season-gold-soft);
+  color: #3d2e1a;
+}
+
+.market-benefits {
+  background: #fffef9;
+  border-bottom-color: #e8dfd2;
+}
+
+.market-benefits svg,
+.market-benefits h2 + div svg,
+.category-grid svg,
+.market-ending svg {
+  color: var(--season-copper);
+}
+
+.market-promo {
+  background: var(--season-gold-soft);
+}
+
+.shore-market {
+  background: #f8ecd8;
+}
+
+.shore-market .promo-kicker {
+  color: #8a5a22;
+}
+
+.market-ending {
+  background: var(--season-bg-soft);
+}
+
+.confidence {
+  background: var(--season-accent-soft);
+}
+
+.cta {
+  background: linear-gradient(135deg, #2f5a48 0%, #3d6b52 55%, #4a3d2a 100%);
+  color: #f7f3eb;
+}
+
+.cta .eyebrow.light {
+  color: #e8d4b0;
+}
+
+.booking-experience {
+  background: var(--season-bg-soft);
+}
+
+footer {
+  background: #efe6d9;
+  border-top-color: #ddd2c4;
+}
+
+.floating-chat {
+  background: var(--season-accent);
+}
+
+.market-hero-photo .market-hero-shade {
+  background: var(--season-hero-shade);
+}
+
+.market-hero-photo .hero-photo {
+  object-position: center center;
+  image-rendering: auto;
+}
+
+.promo-visual-autumn .scene {
+  filter: sepia(0.12) saturate(1.08);
+}
+
+.market-hero-content > p:first-child {
+  color: #f0dcc0;
+  letter-spacing: 0.18em;
+}
+
+.hero-actions .button.light {
+  background: #fffef8;
+  color: #2a3d32;
+  border: 1px solid #ffffff55;
+}
+
+.experience-search {
+  box-shadow: 0 8px 28px #1a100818;
+}
+
+.promo-kicker,
+.booking-kicker,
+.eyebrow,
+.page-hero .eyebrow {
+  color: var(--season-copper);
+}
+
+.card-bottom a,
+.tour-card .card-category,
+.results-toolbar label,
+.saved-nav > span {
+  color: var(--season-accent);
+}
+
+.tour-card .card-category {
+  color: var(--season-copper);
+}

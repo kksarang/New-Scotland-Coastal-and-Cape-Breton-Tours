@@ -1,12 +1,12 @@
 // Builds <head> metadata for a route. renderHead() is used when pre-rendering, applyHead() on client navigation.
 import {business} from '../data/business';
-import {ogImage,scene} from '../data/images';
+import {ogImage,imageMeta} from '../data/images';
 import {schemaFor} from './schema';
 export function headTags(route){
 const pageUrl=business.website+route.path;const image=business.website+ogImage(route.image);const indexable=route.type!=='404';
 const meta=(key,content,property=key.startsWith('og:')||key.startsWith('article:'))=>['meta',{[property?'property':'name']:key,content}];
 const tags=[meta('description',route.description),indexable&&['link',{rel:'canonical',href:pageUrl}],route.noindex&&meta('robots','noindex, follow'),
-meta('og:site_name',business.name),meta('og:locale','en_CA'),meta('og:type',route.type==='article'?'article':'website'),meta('og:title',route.title),meta('og:description',route.description),indexable&&meta('og:url',pageUrl),meta('og:image',image),meta('og:image:width','1200'),meta('og:image:height','630'),meta('og:image:alt',scene(route.image).alt),
+meta('og:site_name',business.name),meta('og:locale','en_CA'),meta('og:type',route.type==='article'?'article':'website'),meta('og:title',route.title),meta('og:description',route.description),indexable&&meta('og:url',pageUrl),meta('og:image',image),meta('og:image:width','1200'),meta('og:image:height','630'),meta('og:image:alt',imageMeta(route.image).alt),
 meta('twitter:card','summary_large_image'),meta('twitter:title',route.title),meta('twitter:description',route.description),meta('twitter:image',image),
 ...(route.guide?[meta('article:published_time',route.guide.published),meta('article:modified_time',route.guide.updated)]:[])].filter(Boolean);
 return {title:route.title,tags,schema:indexable?schemaFor(route):null}}

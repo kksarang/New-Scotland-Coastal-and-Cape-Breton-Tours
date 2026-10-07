@@ -8,7 +8,7 @@ import {business} from '../data/business';
 const brand=business.name;
 const page=(path,title,description,extra={})=>({path,title,description,image:'coast',type:'page',crumbs:[],priority:0.6,...extra});
 export const routes=[
-page('/','Cape Breton Tours & Taxi Service in Sydney, NS | '+brand,'Explore Cape Breton with private tours from Sydney, Nova Scotia. Cabot Trail tours, Louisbourg, cruise shore excursions, coastal sightseeing and local taxi service. Call +1 902-549-4542.',{type:'home',priority:1}),
+page('/','Cape Breton Tours & Taxi Service in Sydney, NS | '+brand,'Explore Cape Breton with private tours from Sydney, Nova Scotia. Cabot Trail tours, Louisbourg, cruise shore excursions, coastal sightseeing and local taxi service. Call +1 902-549-4542.',{type:'home',image:'homeHero',priority:1}),
 page('/cape-breton-tours/','Cape Breton Tours from Sydney, Nova Scotia | Private Tours','Private Cape Breton tours from Sydney, Nova Scotia: the Cabot Trail, Fortress of Louisbourg, Highlands, Highland Village and coastal sightseeing, planned around your group.',{crumbs:[['Cape Breton tours']],priority:0.9}),
 ...tours.map(t=>page(t.path,t.seoTitle,t.metaDescription,{type:'tour',image:t.image,crumbs:[['Tours','/cape-breton-tours/'],[t.name]],tour:t,priority:0.9})),
 ...servicePages.map(s=>page(s.path,s.seoTitle,s.metaDescription,{type:'service',image:s.image,crumbs:[[s.name]],service:s,priority:s.slug==='things-to-do'?0.7:0.9})),

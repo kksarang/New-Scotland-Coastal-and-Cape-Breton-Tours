@@ -42,4 +42,21 @@ magick "$LOGO" -resize 192x192 -strip "$OUT/icons/icon-192.png"
 magick "$LOGO" -resize 180x180 -strip "$OUT/icons/apple-touch-icon.png"
 magick "$LOGO" -resize 48x48 -strip "$OUT/icons/favicon-48.png"
 magick "$LOGO" -define icon:auto-resize=48,32,16 public/favicon.ico
+
+# Homepage hero (owner photo: home-hero-autumn-coastal-road.jpg).
+HERO_SRC="$SRC/home-hero-autumn-coastal-road.jpg"
+HERO_OUT="$OUT/hero"
+HERO_BASE="home-hero-autumn-coastal"
+mkdir -p "$HERO_OUT"
+if [ -f "$HERO_SRC" ]; then
+  cp "$HERO_SRC" "$HERO_OUT/${HERO_BASE}-full.jpg"
+  for width in 768 1024 2048; do
+    height=$((width * 10 / 21))
+    magick "$HERO_SRC" -auto-orient -filter Lanczos -resize "${width}x${height}^" -gravity center -extent "${width}x${height}" \
+      -unsharp 0x0.65+0.65+0.006 -strip -define webp:method=6 -quality 96 "$HERO_OUT/${HERO_BASE}-${width}.webp"
+  done
+  magick "$HERO_SRC" -auto-orient -filter Lanczos -resize 2048x -unsharp 0x0.65+0.65+0.006 -strip -quality 94 "$HERO_OUT/${HERO_BASE}-2048.jpg"
+  magick "$HERO_SRC" -auto-orient -filter Lanczos -resize 1200x630^ -gravity center -extent 1200x630 -strip -quality 94 "$OUT/og/${HERO_BASE}.jpg"
+fi
+
 echo "Images written to $OUT"
