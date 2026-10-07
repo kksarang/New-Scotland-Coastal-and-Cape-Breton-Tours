@@ -1,159 +1,209 @@
-/* Autumn / fall seasonal palette — warm creams, forest green, copper & gold accents. */
+/*
+ * Site-wide autumn coastal theme from the owner banner:
+ * ocean blues, burnt orange foliage, gold, warm cream.
+ */
 :root {
-  --season-bg: #faf6f0;
-  --season-bg-soft: #f3ebe0;
-  --season-ink: #1f2e28;
-  --season-muted: #5c655c;
-  --season-accent: #2f6b52;
-  --season-accent-hover: #255a44;
-  --season-accent-soft: #e8f0ea;
-  --season-gold: #c9924a;
-  --season-gold-soft: #f5e6cf;
-  --season-copper: #a65f2a;
-  --season-hero-shade: linear-gradient(180deg, #1a1208aa 0%, #1a151099 42%, #120f0cbb 100%);
+  --season-bg: #fdf8f1;
+  --season-bg-soft: #f6ebe0;
+  --season-ink: #2a2f2e;
+  --season-muted: #5c5f5a;
+  --season-ocean: #1a5570;
+  --season-ocean-deep: #0f3d52;
+  --season-ocean-hover: #0a3042;
+  --season-ocean-soft: #dceaf0;
+  --season-autumn: #c2672a;
+  --season-autumn-deep: #9e4a1a;
+  --season-autumn-gold: #e3a23c;
+  --season-autumn-soft: #fce8d4;
+  --season-forest: #3d5c44;
+  --navy: #0f3d52;
+  --teal: #1a5570;
+  --gold: #e3a23c;
 }
 
-html {
-  background: var(--season-bg);
+html, body { background: var(--season-bg); color: var(--season-ink); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline-color: var(--season-ocean);
 }
 
-body {
-  background: var(--season-bg);
-  color: var(--season-ink);
-}
-
-.market-header {
-  background: #fffef9;
-  border-bottom-color: #e8dfd2;
-}
-
-.market-brand {
-  color: var(--season-accent);
-}
-
-.market-subnav {
-  background: #fffef9;
-  border-bottom-color: #e8dfd2;
-}
-
-.market-subnav a.active {
-  color: var(--season-copper);
-}
-
+/* —— Buttons —— */
 .button.navy,
 .cta .button,
+.cta .gold,
 .market-header .header-cta,
 .experience-search button,
-.mobile-actions a:last-child {
-  background: var(--season-accent);
+.catalog-search .button,
+.mobile-actions a:last-child,
+.reservation-card form button,
+.inquiry .button.navy,
+.booking-submit > .button {
+  background: var(--season-ocean-deep) !important;
+  color: #fff !important;
 }
-
 .button.navy:hover,
-.cta .button:hover {
-  background: var(--season-accent-hover);
+.cta .button:hover,
+.market-header .header-cta:hover,
+.experience-search button:hover,
+.catalog-search .button:hover {
+  background: var(--season-ocean-hover) !important;
 }
-
 .button.gold {
-  background: var(--season-gold-soft);
-  color: #3d2e1a;
+  background: var(--season-autumn-soft) !important;
+  color: #4a3018 !important;
 }
-
-.market-benefits {
-  background: #fffef9;
-  border-bottom-color: #e8dfd2;
+.button.gold:hover {
+  background: #f3d4ae !important;
 }
-
-.market-benefits svg,
-.market-benefits h2 + div svg,
-.category-grid svg,
-.market-ending svg {
-  color: var(--season-copper);
-}
-
-.market-promo {
-  background: var(--season-gold-soft);
-}
-
-.shore-market {
-  background: #f8ecd8;
-}
-
-.shore-market .promo-kicker {
-  color: #8a5a22;
-}
-
-.market-ending {
-  background: var(--season-bg-soft);
-}
-
-.confidence {
-  background: var(--season-accent-soft);
-}
-
-.cta {
-  background: linear-gradient(135deg, #2f5a48 0%, #3d6b52 55%, #4a3d2a 100%);
-  color: #f7f3eb;
-}
-
-.cta .eyebrow.light {
-  color: #e8d4b0;
-}
-
-.booking-experience {
-  background: var(--season-bg-soft);
-}
-
-footer {
-  background: #efe6d9;
-  border-top-color: #ddd2c4;
-}
-
-.floating-chat {
-  background: var(--season-accent);
-}
-
-.market-hero-photo .market-hero-shade {
-  background: var(--season-hero-shade);
-}
-
-.market-hero-photo .hero-photo {
-  object-position: center center;
-  image-rendering: auto;
-}
-
-.promo-visual-autumn .scene {
-  filter: sepia(0.12) saturate(1.08);
-}
-
-.market-hero-content > p:first-child {
-  color: #f0dcc0;
-  letter-spacing: 0.18em;
-}
-
+.button.light,
 .hero-actions .button.light {
-  background: #fffef8;
-  color: #2a3d32;
-  border: 1px solid #ffffff55;
+  background: #fffef8 !important;
+  color: var(--season-ocean-deep) !important;
+  border: 1px solid #ffffff80;
+}
+.button.outline {
+  background: transparent !important;
+  color: var(--season-ocean-deep) !important;
+  border: 1px solid #c9d6dc;
 }
 
-.experience-search {
-  box-shadow: 0 8px 28px #1a100818;
-}
+/* —— Chrome —— */
+.market-header,
+.market-subnav { background: #fffdf8; border-bottom-color: #e8dfd2; }
+.market-brand { color: var(--season-ocean-deep); }
+.market-brand-tagline { color: var(--season-autumn-deep); }
+.market-subnav a.active { color: var(--season-autumn-deep) !important; }
+.header-search { border-color: #e0d4c6; background: #fff; }
+.header-search button { color: var(--season-ocean) !important; }
+.saved-nav > span { background: var(--season-autumn-soft); color: var(--season-autumn-deep); }
+.floating-chat { background: var(--season-ocean-deep) !important; }
+.mobile-actions { background: #fffdf8; }
+.mobile-actions a { color: var(--season-ocean-deep); }
 
+/* —— Hero —— */
+.market-hero { background: var(--season-ocean-deep); }
+.market-hero-photo .market-hero-shade {
+  background: linear-gradient(105deg, #0f3d52cc 0%, #1a557088 40%, #3d281866 75%, #1a1208bb 100%);
+}
+.market-hero-content > p:first-child { color: var(--season-autumn-gold); }
+.experience-search { box-shadow: 0 10px 32px #0f3d5224; }
+
+/* —— Home sections —— */
+.market-benefits { background: #fffdf8; border-bottom-color: #e8dfd2; }
+.market-benefits svg,
+.category-grid svg,
+.market-ending svg,
+.trust svg,
+.card-facts svg,
+.info-grid svg,
+.see-list svg,
+.place-links svg,
+.inline-icon,
+.confidence-list svg,
+.check-list svg,
+.experience-facts svg,
+.guide-card .card-category,
+.inquiry .prepared svg,
+.booking-prepared > svg {
+  color: var(--season-autumn) !important;
+}
 .promo-kicker,
 .booking-kicker,
 .eyebrow,
-.page-hero .eyebrow {
-  color: var(--season-copper);
+.page-hero .eyebrow,
+.experience-category {
+  color: var(--season-autumn-deep) !important;
 }
+.market-promo {
+  background: linear-gradient(135deg, var(--season-autumn-soft) 0%, var(--season-ocean-soft) 100%);
+}
+.shore-market { background: #f9e8cf; }
+.shore-market .promo-kicker { color: var(--season-autumn-deep); }
+.shore-market .button { background: var(--season-ocean-deep) !important; }
+.shore-icon { background: var(--season-autumn-soft); color: var(--season-autumn-deep); }
+.market-ending { background: var(--season-bg-soft); }
+.confidence { background: var(--season-ocean-soft); }
+.cta {
+  background: linear-gradient(120deg, var(--season-ocean-deep) 0%, var(--season-ocean) 48%, var(--season-autumn-deep) 100%) !important;
+  color: #fdf8f1 !important;
+}
+.cta .eyebrow { color: var(--season-autumn-gold) !important; }
+.cta h2, .cta h2 em { color: #fdf8f1 !important; }
 
-.card-bottom a,
+/* —— Cards / links —— */
 .tour-card .card-category,
-.results-toolbar label,
-.saved-nav > span {
-  color: var(--season-accent);
+.card-bottom a,
+.guide-card .card-category,
+.inline-links a,
+.detail-block a:not(.button):not(.text-link),
+.market-heading > a,
+.compare-table tbody th a,
+.not-found .check-list a,
+.copyright a,
+.booking-back:hover,
+.booking-help a,
+.text-link,
+.detail-tabs a:hover,
+.save-tour.is-saved,
+.detail-save[aria-pressed=true] {
+  color: var(--season-ocean) !important;
+}
+.copyright a:hover { color: var(--season-autumn-deep) !important; }
+.category-grid > a:hover {
+  border-color: var(--season-autumn);
+  background: var(--season-autumn-soft);
+}
+.service-grid > a:hover { background: var(--season-ocean-soft); }
+.page-hero { background: #e8f0f2; color: var(--season-ocean-deep); }
+.catalog-top { background: var(--season-bg-soft); }
+.sidebar-help { background: var(--season-ocean-soft); }
+.sidebar-help svg { color: var(--season-ocean) !important; }
+.catalog-sidebar input,
+.check-field input { accent-color: var(--season-ocean); }
+.reservation-badge { color: var(--season-ocean); background: var(--season-ocean-soft); }
+.reservation-card li svg { color: var(--season-autumn) !important; }
+.itinerary-stops li > span {
+  background: var(--season-autumn-soft);
+  border-color: #e0b98a;
+  color: var(--season-autumn-deep);
 }
 
-.tour-card .card-category {
-  color: var(--season-copper);
+/* —— Forms / booking —— */
+.booking-experience { background: var(--season-bg-soft); }
+.booking-reassurance {
+  color: var(--season-ocean);
+  background: var(--season-ocean-soft);
+  border-color: #b9d0da;
 }
+.booking-section-heading > span {
+  background: var(--season-ocean-soft);
+  color: var(--season-ocean-deep);
+}
+.booking-fields :is(input, select, textarea):focus {
+  border-color: var(--season-ocean);
+  box-shadow: 0 0 0 3px #d5e6ed;
+}
+.guest-stepper button:hover:not(:disabled) {
+  background: var(--season-ocean-soft);
+  border-color: var(--season-ocean);
+}
+.price-total strong { color: var(--season-ocean-deep) !important; }
+.summary-inclusions { background: var(--season-ocean-soft); color: var(--season-ocean-deep); }
+.help-icon { background: var(--season-autumn-soft); color: var(--season-autumn-deep); }
+.booking-prepared { background: #e8f3f0; border-top-color: #b7d4c8; }
+
+footer {
+  background: #ebe2d6 !important;
+  border-top-color: #d5c9bb;
+  color: #2f3533;
+}
+.footer-grid h2,
+.footer-grid h4 { color: var(--season-ocean-deep); }
+
+.vehicle-feature,
+.ride-call,
+.booking-info { background: var(--season-ocean-soft) !important; }

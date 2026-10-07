@@ -43,6 +43,23 @@ React, Vite, React Router, Tailwind CSS, Lucide icons and Framer Motion. Source 
 6. Production (GitHub Pages): in the GitHub repository go to **Settings → Secrets and variables → Actions → Variables** and add `FORMSPREE_FORM_ID` with the same value. Push to `main` or re-run the deploy workflow so the build picks up the variable (Vite inlines env vars at build time; changing the variable requires a rebuild).
 7. Send one clearly labelled test enquiry from the live site. Confirm the submission appears in Formspree and that notification email arrives with a working **Reply-To** to the visitor address.
 
+#### You (business) must receive the enquiry
+
+1. Open Gmail for **`newscotlandcapetours@gmail.com`** and complete any Formspree **email verification** message (check Spam / Promotions).
+2. In Formspree: **Settings → Email notifications** → destination **`newscotlandcapetours@gmail.com`**.
+3. **Submissions** tab: if a row appears, Formspree accepted it. If Gmail is empty, check Spam, then open `https://formspree.io/unblock/newscotlandcapetours@gmail.com`.
+4. The **new enquiry code must be deployed**. Until you push this branch to `main` (or upload a new `dist/` to Hostinger), the live site still only opens mailto drafts.
+
+#### Visitor auto-reply (confirmation)
+
+The website sends `_autoresponse` with the visitor’s `email` field. You must also turn it on in Formspree:
+
+1. Open the form → **Plugins** (or **Workflow**) → **Send a confirmation / response email**.
+2. To: visitor field **`email`**.
+3. Subject: `We received your enquiry — New Scotland Coastal & Cape Breton Tours`.
+4. Body: thank them, say the team will confirm availability, and that this is **not a booking**.
+5. Save. Paid Formspree plans are often required for confirmation emails.
+
 Never commit Formspree account passwords, Gmail app passwords or private API keys. Only the public form ID belongs in `VITE_FORMSPREE_FORM_ID`.
 - No invented pricing, durations, inclusions or reviews are displayed. See `SEO-AUDIT.md` for what still needs owner information.
 

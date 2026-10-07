@@ -11,6 +11,28 @@ export function normalizeVisitorEmail(value) {
   return String(value || '').trim().toLowerCase();
 }
 
+/** Auto-reply text Formspree sends to the visitor when confirmation email is enabled. */
+export function visitorAutoReply() {
+  return (
+    'Thank you for contacting ' +
+    business.name +
+    '. We have received your enquiry and will reply with availability and pricing. ' +
+    'This is an automatic confirmation — it is not a booking. ' +
+    'If you need us sooner, call ' +
+    business.phone +
+    ' or WhatsApp the same number.'
+  );
+}
+
+function withDeliveryFields(payload) {
+  return {
+    ...payload,
+    _replyto: payload.email,
+    _autoresponse: visitorAutoReply(),
+    _autoresponse_subject: 'We received your enquiry — ' + business.name,
+  };
+}
+
 /** Human-readable summary for email body and optional follow-up channels. */
 export function formatEnquirySummary(entries) {
   return Object.entries(entries)
@@ -62,7 +84,7 @@ export async function submitEnquiryToProvider(payload) {
     const response = await fetch('https://formspree.io/f/' + encodeURIComponent(formspreeFormId), {
       method: 'POST',
       headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
-      body: JSON.stringify({_replyto: payload.email, ...payload}),
+      body: JSON.stringify(withDeliveryFields(payload)),
       signal: controller.signal,
     });
     clearTimeout(timeoutId);
