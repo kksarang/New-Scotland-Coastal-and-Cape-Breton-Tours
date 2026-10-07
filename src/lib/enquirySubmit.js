@@ -11,24 +11,45 @@ export function normalizeVisitorEmail(value) {
   return String(value || '').trim().toLowerCase();
 }
 
-/** Auto-reply text Formspree sends to the visitor when confirmation email is enabled. */
-export function visitorAutoReply() {
+function lineIf(label, value) {
+  const text = value == null ? '' : String(value).trim();
+  return text ? label + ': ' + text : '';
+}
+
+/** Auto-reply text Formspree can send to the visitor (plugin / _autoresponse). */
+export function visitorAutoReply(payload = {}) {
+  const details = [
+    lineIf('Service', payload.service),
+    lineIf('Tour', payload.tour),
+    lineIf('Date', payload.date || payload.travel_date),
+    lineIf('Pickup time', payload.pickup_time || payload.arrival_time),
+    lineIf('Pickup location', payload.pickup_location),
+    lineIf('Destination', payload.destination),
+    lineIf('Guests', payload.guests),
+  ]
+    .filter(Boolean)
+    .join('\n');
+
   return (
     'Thank you for contacting ' +
     business.name +
-    '. We have received your enquiry and will reply with availability and pricing. ' +
-    'This is an automatic confirmation — it is not a booking. ' +
-    'If you need us sooner, call ' +
+    '.\n\n' +
+    'We have received your enquiry' +
+    (details ? ':\n\n' + details + '\n\n' : '. ') +
+    'Our team will confirm availability and pricing. This automatic message is not a confirmed booking.\n\n' +
+    'Need us sooner? Call or WhatsApp ' +
     business.phone +
-    ' or WhatsApp the same number.'
+    '.'
   );
 }
 
 function withDeliveryFields(payload) {
+  const trip_details = visitorAutoReply(payload);
   return {
     ...payload,
+    trip_details,
     _replyto: payload.email,
-    _autoresponse: visitorAutoReply(),
+    _autoresponse: trip_details,
     _autoresponse_subject: 'We received your enquiry — ' + business.name,
   };
 }

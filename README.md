@@ -52,13 +52,15 @@ React, Vite, React Router, Tailwind CSS, Lucide icons and Framer Motion. Source 
 
 #### Visitor auto-reply (confirmation)
 
-The website sends `_autoresponse` with the visitor’s `email` field. You must also turn it on in Formspree:
+The website already sends `_autoresponse` (thanks + date, pickup location and time) to Formspree. **Formspree will not email the visitor until you enable this in the dashboard.** Owner notification emails do not create a client thank-you.
 
-1. Open the form → **Plugins** (or **Workflow**) → **Send a confirmation / response email**.
-2. To: visitor field **`email`**.
+1. Formspree → your form → **Plugins** → **Email** → **Send a confirmation or response email**  
+   (or **Workflow** → add **Send email**).
+2. Recipient: the submitter field **`email`** (not the business Gmail).
 3. Subject: `We received your enquiry — New Scotland Coastal & Cape Breton Tours`.
-4. Body: thank them, say the team will confirm availability, and that this is **not a booking**.
-5. Save. Paid Formspree plans are often required for confirmation emails.
+4. Save. If the plugin is locked, the current Formspree plan does not include visitor confirmation — upgrade or add the Email plugin.
+
+The visitor should check **Spam**. The thanks mail is only a receipt, not a booking.
 
 Never commit Formspree account passwords, Gmail app passwords or private API keys. Only the public form ID belongs in `VITE_FORMSPREE_FORM_ID`.
 - No invented pricing, durations, inclusions or reviews are displayed. See `SEO-AUDIT.md` for what still needs owner information.
